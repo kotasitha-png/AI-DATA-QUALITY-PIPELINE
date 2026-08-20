@@ -1,0 +1,16 @@
+{
+  "project_name": "AI Data Quality & Remediation Pipeline",
+  "input": {
+    "default_format": "csv",
+    "header": true,
+    "infer_schema": true
+  },
+  "output": {
+    "valid_path": "data/valid",
+    "quarantine_path": "data/quarantine",
+    "report_path": "output"
+  },
+  "spark": {
+    "shuffle_partitions": 8
+  }
+}

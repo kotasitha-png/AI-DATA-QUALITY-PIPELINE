@@ -1,0 +1,47 @@
+# Virtual environment
+.venv/
+venv/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Spark local files
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Generated project output
+output/
+logs/
+
+# Private and raw data
+data/private/
+data/raw/
+
+# macOS files
+.DS_Store
+
+# VS Code local settings
+.vscode/
+
+# Credentials and certificates
+*.pem
+*.key
+credentials.json
+secrets.jsonv
+
+# Keep directories even when empty
+
+!output/.gitkeep
+
+!data/valid/.gitkeep
+
+!data/quarantine/.gitkeep
