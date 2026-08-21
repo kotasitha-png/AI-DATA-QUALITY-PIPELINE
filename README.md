@@ -262,6 +262,6 @@ The overall objective is to move beyond isolated validation scripts and build a 
 
 **Author**
 
-Sitha Manasvi Kota
+Sitha Kota
 
 Data Engineering | Apache Spark | PySpark | Python | SQL | Data Quality | AI-Driven Data Systems
