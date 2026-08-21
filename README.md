@@ -1,11 +1,5 @@
 # AI-DATA-QUALITY-PIPELINE
-Yes — paper-style is the better direction for what you want. Not a tutorial README, not a product landing page, and not a long list of engineering explanations.
 
-What you are asking for is essentially a technical project paper condensed into a GitHub README: professional title, abstract, problem statement, objectives, methodology/architecture, technology stack, implementation status, results/expected outcomes, and future scope. That structure will look much more serious and academic/engineering-oriented.
-
-Use this version.
-
-AI-Driven Data Quality Pipeline
 
 **Abstract**
 
