@@ -1,0 +1,63 @@
+{
+  "dataset_name": "customers",
+  "rules": [
+    {
+      "rule_id": "CUSTOMER_ID_NOT_NULL",
+      "type": "not_null",
+      "column": "customer_id",
+      "severity": "critical"
+    },
+    {
+      "rule_id": "CUSTOMER_ID_UNIQUE",
+      "type": "unique",
+      "column": "customer_id",
+      "severity": "critical"
+    },
+    {
+      "rule_id": "EMAIL_NOT_NULL",
+      "type": "not_null",
+      "column": "email",
+      "severity": "high"
+    },
+    {
+      "rule_id": "EMAIL_FORMAT",
+      "type": "regex",
+      "column": "email",
+      "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+      "severity": "medium"
+    },
+    {
+      "rule_id": "AGE_RANGE",
+      "type": "range",
+      "column": "age",
+      "min": 0,
+      "max": 120,
+      "severity": "high"
+    },
+    {
+      "rule_id": "STATE_ALLOWED",
+      "type": "allowed_values",
+      "column": "state",
+      "values": [
+        "NJ",
+        "NY",
+        "PA",
+        "MA",
+        "CT",
+        "CA",
+        "TX",
+        "FL",
+        "IL",
+        "WA"
+      ],
+      "severity": "medium"
+    },
+    {
+      "rule_id": "BALANCE_NON_NEGATIVE",
+      "type": "range",
+      "column": "balance",
+      "min": 0,
+      "severity": "high"
+    }
+  ]
+}

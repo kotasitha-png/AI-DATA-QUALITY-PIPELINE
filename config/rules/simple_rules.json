@@ -1,0 +1,19 @@
+{
+  "dataset_name": "customers_test",
+  "rules": [
+    {
+      "rule_id": "FIRST_NAME_REQUIRED",
+      "type": "not_null",
+      "column": "first_name",
+      "severity": "medium"
+    },
+    {
+      "rule_id": "BALANCE_RANGE",
+      "type": "range",
+      "column": "balance",
+      "min": 0,
+      "max": 50000,
+      "severity": "medium"
+    }
+  ]
+}
