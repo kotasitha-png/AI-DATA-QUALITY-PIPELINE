@@ -192,72 +192,117 @@ This approach reduces coupling between modules and allows individual components 
 
 **8. Current Implementation Status**
 
-The project is currently under active development.
+The core AI-Driven Data Quality Pipeline has been implemented and validated as an end-to-end PySpark application.
 
 Completed
 
-* Repository and project structure
-* Python virtual environment
-* Apache Spark and PySpark environment setup
-* Initial Spark execution validation
-* Modular package organization
-
-In Progress
-
+* Modular Python project and package architecture
+* Isolated Python virtual environment and dependency management
+* Apache Spark and PySpark local execution environment
 * Reusable Spark session configuration
-* Generic ingestion components
-* Data profiling framework
-* Data-quality rule architecture
+* Synthetic dirty-data generation for controlled testing
+* Generic ingestion for CSV, JSON, and Parquet datasets
+* Optional explicit Spark schema support
+* Generic dataset and column profiling
+* Configuration-driven data-quality rules
+* NOT NULL validation
+* uniqueness validation
+* numeric range validation
+* regular-expression validation
+* allowed-value validation
+* Record-level quality classification
+* Rule-level failure tracking for individual records
+* Valid and quarantined record separation
+* Record-count reconciliation between source, valid, and quarantined datasets
+* Row-level quality scoring
+* Severity-weighted rule scoring
+* Overall dataset quality scoring and risk classification
+* Quality-issue prioritization
+* Parquet persistence for valid and quarantined records
+* Structured JSON profiling and quality reports
+* AI-assisted quality analysis and remediation recommendations
+* Deterministic fallback analysis when the external LLM is unavailable
+* Interactive Streamlit data-quality dashboard
+* Automated PySpark and quality-engine tests using pytest
+* Local scalability and performance benchmarking
+* End-to-end pipeline orchestration through a single command-line entry point
 
-Planned
+The implemented architecture separates ingestion, profiling, validation, classification, persistence, scoring, and AI analysis into reusable components. Dataset-specific validation requirements are externalized through configuration rather than embedded directly into the core processing engine.
 
-* Metadata-driven validation engine
-* Record-level failure tracking
-* Quality-score generation
-* Invalid-record quarantine
-* Automated remediation framework
-* AI-assisted quality analysis
-* Testing and end-to-end pipeline integration
+**9. Validation and Performance Results**
 
-**9. Expected Outcome**
+The pipeline has been validated using synthetic customer datasets containing deliberately injected quality problems, including null values, duplicate identifiers, malformed email addresses, invalid numeric ranges, unsupported categorical values, negative balances, and malformed dates.
 
-The completed framework is expected to provide a reusable approach for validating different datasets through a common processing architecture.
+The same PySpark processing architecture was benchmarked locally against increasing dataset sizes without modifying the core pipeline implementation.
 
-A new dataset should eventually require primarily:
+Local Benchmark Results
 
-* source configuration;
-* schema expectations;
-* quality-rule definitions;
-* and dataset-specific metadata.
+Dataset	Rows Processed	Profiling	Validation	Classification	Split Execution	Total Processing	Throughput
+10K	10,100	1.048 s	0.466 s	0.071 s	0.279 s	2.772 s	3,643.58 rows/sec
+100K	101,000	0.685 s	0.398 s	0.044 s	0.489 s	1.840 s	54,891.30 rows/sec
 
-The core profiling and validation engine should remain reusable.
+The 1M-row benchmark was not executed because the corresponding local test dataset had not been generated at the time of measurement.
 
-This design reduces the need for repeated custom validation pipelines and provides a stronger foundation for scalable data-quality management.
+These measurements were produced in a local Spark environment and should not be interpreted as distributed-cluster performance benchmarks. The results demonstrate that the same PySpark and configuration-driven architecture can process increasing local dataset sizes without changes to the core validation logic.
 
-**10. Future Scope**
+The higher throughput observed during the 100K test should not be interpreted as linear performance scaling. Spark startup costs, JVM warm-up, caching, execution planning, and local resource utilization can have a proportionally larger effect on smaller workloads.
 
-Future development will focus on extending the framework with:
+**10. Current Outcome**
 
-* automated schema discovery;
-* dynamic quality-rule generation;
-* dataset-level quality scoring;
-* quality dashboards;
-* centralized logging and monitoring;
-* configurable remediation workflows;
-* AI-based quality issue summarization;
-* AI-assisted root-cause analysis;
-* recommendation generation;
-* multi-source ingestion;
-* and deployment to distributed or cloud-based data platforms.
+The implemented framework provides a reusable approach for applying data-quality controls across datasets through a common processing architecture.
 
+A dataset can be processed by supplying:
+
+* an input dataset;
+* its file format;
+* optional schema expectations;
+* a quality-rule configuration;
+* and a logical dataset name.
+
+The core pipeline can then perform:
+
+ingestion → profiling → validation → record classification → valid/quarantine separation → quality scoring → persistence → issue prioritization → AI-assisted analysis
+
+without embedding dataset-specific business rules directly into the processing engine.
+
+This design reduces the need to build separate validation scripts for every dataset and provides a foundation for reusable data-quality processing across multiple data domains.
+
+**11. Future Scope**
+
+The current implementation provides a functional local MVP. Future development can extend the framework toward a production-scale intelligent data-quality platform through:
+
+* automated schema discovery and schema-drift detection;
+* AI-assisted quality-rule generation from dataset metadata and business descriptions;
+* referential-integrity and cross-dataset validation;
+* custom SQL and expression-based quality rules;
+* configurable automated remediation workflows;
+* remediation approval and reprocessing mechanisms;
+* centralized metadata, logging, monitoring, and alerting;
+* historical quality-score tracking and trend analysis;
+* richer data-quality dashboards;
+* pipeline observability and operational metrics;
+* batch and source-system lineage metadata;
+* multi-source ingestion from databases, APIs, object storage, and streaming platforms;
+* distributed deployment using platforms such as Databricks or managed Spark environments;
+* persistent rule and dataset metadata repositories;
+* orchestration through enterprise workflow platforms;
+* and more advanced AI-assisted root-cause analysis and remediation planning.
+
+A future extension could also introduce AI agents capable of inspecting profiling metadata, proposing validation rules, identifying likely causes of quality degradation, and recommending or orchestrating remediation actions subject to human approval.
 
 **Conclusion**
 
-The AI-Driven Data Quality Pipeline is being developed as a scalable and reusable framework that combines traditional data engineering practices with AI-assisted data-quality analysis.
+The AI-Driven Data Quality Pipeline demonstrates how traditional data-engineering controls can be combined with AI-assisted analysis within a modular PySpark architecture.
 
-The project demonstrates the design of a modular data platform component capable of profiling datasets, enforcing quality standards, isolating failures, producing measurable quality results, and supporting intelligent investigation of data-quality issues.
+The implemented system can ingest supported datasets, generate structural and statistical profiles, execute externally configured quality rules, identify record-level failures, separate valid and quarantined records, calculate measurable quality scores, persist curated outputs, and generate remediation-oriented analysis from deterministic quality findings.
 
-The overall objective is to move beyond isolated validation scripts and build a structured data-quality framework that can evolve toward production-scale data engineering environments.
+A key design principle is the separation of deterministic validation from generative AI. PySpark remains responsible for evaluating the data and producing measurable quality facts, while the AI layer operates on structured quality summaries to explain issues and recommend remediation rather than attempting to validate large datasets directly.
+
+Automated tests provide regression protection, while local performance benchmarks provide measured evidence of behavior across increasing dataset sizes. The end-to-end runner integrates the individual components into a single executable workflow.
+
+The project therefore moves beyond isolated validation scripts toward a reusable data-quality framework that can be extended to additional datasets, rules, execution environments, and intelligent automation capabilities.
+
+Its next stage of evolution would focus on distributed deployment, automated metadata and rule discovery, historical observability, and increasingly autonomous—but controlled—data-quality remediation.
 
 
 **Author**
