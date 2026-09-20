@@ -238,9 +238,34 @@ The same PySpark processing architecture was benchmarked locally against increas
 Local Benchmark Results
 
 Dataset	Rows Processed	Profiling	Validation	Classification	Split Execution	Total Processing	Throughput
-10K	10,100	1.048 s	0.466 s	0.071 s	0.279 s	2.772 s	3,643.58 rows/sec
-100K	101,000	0.685 s	0.398 s	0.044 s	0.489 s	1.840 s	54,891.30 rows/sec
+============================================================
+BENCHMARKING 10K
+============================================================
+Rows: 10,100
+Profiling: 1.098s
+Validation: 0.515s
+Classification: 0.072s
+Split execution: 0.291s
+Total processing: 2.807s
+Throughput: 3,598.15 rows/second
 
+
+============================================================
+BENCHMARKING 100K
+============================================================
+Rows: 101,000
+Profiling: 0.752s
+Validation: 0.430s
+Classification: 0.047s
+Split execution: 0.441s
+Total processing: 1.913s
+Throughput: 52,796.65 rows/second
+Skipping 1M: data/raw/customers_1000000.csv does not exist.
+
+
+============================================================
+SCALABILITY BENCHMARK COMPLETE
+============================================================
 The 1M-row benchmark was not executed because the corresponding local test dataset had not been generated at the time of measurement.
 
 These measurements were produced in a local Spark environment and should not be interpreted as distributed-cluster performance benchmarks. The results demonstrate that the same PySpark and configuration-driven architecture can process increasing local dataset sizes without changes to the core validation logic.
